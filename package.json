@@ -2,7 +2,18 @@
   "name": "scenage",
   "module": "index.ts",
   "type": "module",
+  "version": "0.0.1",
+  "description": "🎬 A type-safe Node.js CLI for automatically arranging your movie downloads — Scenage moves, renames, and checks your episodes and subtitles with ease.",
   "private": true,
+  "scripts": {
+    "lint": "tsc -b && eslint --fix"
+  },
+  "dependencies": {
+    "@clack/core": "^0.5.0",
+    "@clack/prompts": "^0.11.0",
+    "cmd-ts": "^0.14.3",
+    "colorette": "^2.0.20"
+  },
   "devDependencies": {
     "@eslint/js": "^9.37.0",
     "@eslint/markdown": "^7.4.0",
@@ -13,11 +24,5 @@
   },
   "peerDependencies": {
     "typescript": "^5"
-  },
-  "dependencies": {
-    "@clack/core": "^0.5.0",
-    "@clack/prompts": "^0.11.0",
-    "cmd-ts": "^0.14.3",
-    "colorette": "^2.0.20"
   }
 }
