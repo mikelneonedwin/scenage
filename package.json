@@ -6,7 +6,8 @@
   "description": "🎬 A type-safe Node.js CLI for automatically arranging your movie downloads — Scenage moves, renames, and checks your episodes and subtitles with ease.",
   "private": true,
   "scripts": {
-    "lint": "tsc -b && eslint --fix"
+    "lint": "tsc -b && eslint --fix",
+    "prepare": "husky"
   },
   "dependencies": {
     "@clack/core": "^0.5.0",
@@ -20,6 +21,9 @@
     "@types/bun": "latest",
     "eslint": "^9.37.0",
     "globals": "^16.4.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.4",
+    "prettier": "^3.6.2",
     "typescript-eslint": "^8.46.1"
   },
   "peerDependencies": {
