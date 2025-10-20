@@ -1,5 +1,5 @@
-import { boolean, flag, number, option, optional, positional } from "cmd-ts";
-import { SUBTITLE_EXTENSIONS, VIEDO_EXTENSIONS } from "../constants/index.js";
+import { boolean, flag, number, option, positional } from "cmd-ts";
+import { SUBTITLE_EXTENSIONS, VIDEO_EXTENSIONS } from "../constants/index.js";
 import { CsvList } from "../core/csv-list-type.js";
 import { Path } from "../core/path-type.js";
 
@@ -19,7 +19,7 @@ export const detectArgs = {
   }),
 
   minVideoFileSizeMB: option({
-    type: optional(number),
+    type: number,
     long: "min-size",
     short: "m",
     description: "Ignore video files smaller than this size (in megabytes)",
@@ -27,15 +27,15 @@ export const detectArgs = {
   }),
 
   videos: option({
-    type: optional(CsvList),
+    type: CsvList,
     long: "videos",
     description:
       "Comma-separated list of file extensions to treat as videos (e.g. mp4,mkv,avi)",
-    defaultValue: () => VIEDO_EXTENSIONS,
+    defaultValue: () => VIDEO_EXTENSIONS,
   }),
 
   subs: option({
-    type: optional(CsvList),
+    type: CsvList,
     long: "subs",
     description:
       "Comma-separated list of file extensions to treat as subtitles (e.g. srt,ass,vtt)",
@@ -43,10 +43,11 @@ export const detectArgs = {
   }),
 
   exclude: option({
-    type: optional(CsvList),
+    type: CsvList,
     long: "exclude",
     short: "x",
     description:
       "Comma-separated list of file extensions to exclude (e.g. tmp,part,zip)",
+    defaultValue: () => [],
   }),
 };

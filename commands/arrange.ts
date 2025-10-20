@@ -3,7 +3,7 @@ import { detectArgs } from "@/core/detect-args";
 import { Path } from "@/core/path-type";
 import { command, number, option } from "cmd-ts";
 import { existsSync, mkdirSync, renameSync } from "node:fs";
-import { join } from "node:path";
+import { join, parse } from "node:path";
 import { detect } from "./detect";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -63,13 +63,25 @@ export const arrange = command({
         });
         newFilePath = join(seasonFolderPath, fileName);
       }
-      // Avoid overwriting existing files
-      if (existsSync(newFilePath)) {
-        console.warn(`⚠️ Skipped: ${newFilePath} (already exists)`);
-      } else {
+
+      let counter = 1;
+      let candidatePath = newFilePath;
+      while (existsSync(candidatePath)) {
+        const { dir, name, ext } = parse(newFilePath);
+        candidatePath = join(dir, `${name} (${counter})${ext}`);
+        counter++;
+      }
+
+      newFilePath = candidatePath;
+      try {
         renameSync(file.filePath, newFilePath);
         movedCount++;
+      } catch (error) {
+        console.error(
+          `❌ Failed to move ${file.filePath}: ${error instanceof Error ? error.message : String(error)}`,
+        );
       }
+      movedCount++;
     });
     console.log(`\n✅ Done!`);
     console.log(`📦 Total files arranged: ${movedCount}`);

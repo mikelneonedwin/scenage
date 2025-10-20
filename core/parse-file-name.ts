@@ -46,7 +46,11 @@ export function parseFileName(
   filePath: string,
   opts: { videoExts: string[]; subtitleExts: string[] },
 ): MediaEntry {
-  const ext = extname(filePath).toLowerCase() as FileExtension;
+  const rawExt = extname(filePath).toLowerCase();
+  if (!rawExt) {
+    throw new Error(`File has no extension: ${filePath}`);
+  }
+  const ext = rawExt as FileExtension;
   const isSubtitle = opts.subtitleExts.includes(ext.replace(".", ""));
   const isVideo = opts.videoExts.includes(ext.replace(".", ""));
 
