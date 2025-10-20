@@ -81,7 +81,6 @@ export const arrange = command({
           `❌ Failed to move ${file.filePath}: ${error instanceof Error ? error.message : String(error)}`,
         );
       }
-      movedCount++;
     });
     console.log(`\n✅ Done!`);
     console.log(`📦 Total files arranged: ${movedCount}`);
