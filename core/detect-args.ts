@@ -1,5 +1,9 @@
 import { boolean, flag, number, option, positional } from "cmd-ts";
-import { SUBTITLE_EXTENSIONS, VIDEO_EXTENSIONS } from "../constants/index.js";
+import {
+  MIN_MOVIE_SIZE_MB,
+  SUBTITLE_EXTENSIONS,
+  VIDEO_EXTENSIONS,
+} from "../constants/index.js";
 import { CsvList } from "../core/csv-list-type.js";
 import { Path } from "../core/path-type.js";
 
@@ -18,12 +22,12 @@ export const detectArgs = {
     defaultValue: () => false,
   }),
 
-  minVideoFileSizeMB: option({
+  minMovieFileSizeMB: option({
     type: number,
     long: "min-size",
     short: "m",
     description: "Ignore video files smaller than this size (in megabytes)",
-    defaultValue: () => 50,
+    defaultValue: () => MIN_MOVIE_SIZE_MB,
   }),
 
   videos: option({

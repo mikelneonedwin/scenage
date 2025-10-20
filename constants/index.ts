@@ -8,3 +8,4 @@ export const VIDEO_EXTENSIONS = [
   "wmv",
 ];
 export const SUBTITLE_EXTENSIONS = ["srt", "ass", "sub", "vtt", "idx"];
+export const MIN_MOVIE_SIZE_MB = 40;

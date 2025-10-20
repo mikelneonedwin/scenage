@@ -19,7 +19,7 @@ export const detect = command({
       videos: args.videos,
       subs: args.subs,
       exclude: args.exclude,
-      minVideoFileSizeMB: args.minVideoFileSizeMB,
+      minVideoFileSizeMB: args.minMovieFileSizeMB,
     });
     console.log(`📂 Scanned folder: ${args.path}`);
     console.log(`🧩 Total detected files: ${entries.length}`);
