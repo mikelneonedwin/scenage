@@ -8,7 +8,7 @@ import { detectFiles } from "@/core/detect-files.js";
  *
  * Scans a folder for media files and outputs structured metadata.
  */
-export const detect = command({
+export const detectCmd = command({
   name: "detect",
   description: "Scan a folder for video and subtitle files and parse metadata.",
   args: detectArgs,

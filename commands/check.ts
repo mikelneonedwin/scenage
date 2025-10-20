@@ -1,6 +1,6 @@
 import { detectArgs } from "@/core/detect-args";
 import { command } from "cmd-ts";
-import { detect } from "./detect";
+import { detectCmd } from "./detect";
 
 type MovieRecord = {
   title: string;
@@ -30,12 +30,12 @@ type Report = {
   items: string[];
 };
 
-export const check = command({
+export const checkCmd = command({
   name: "check",
   description: "List missing or unmatched episodes/subtitles.",
   args: detectArgs,
   handler: (args) => {
-    const files = detect.handler(args);
+    const files = detectCmd.handler(args);
     const entries = files.reduce(
       (entries, file) => {
         if (file.type == "movie") {

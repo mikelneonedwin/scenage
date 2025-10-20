@@ -1,7 +1,7 @@
 import { run, subcommands } from "cmd-ts";
-import { detect } from "./commands/detect.js";
-import { arrange } from "./commands/arrange.js";
-import { check } from "./commands/check.js";
+import { detectCmd } from "./commands/detect.js";
+import { arrangeCmd } from "./commands/arrange.js";
+import { checkCmd } from "./commands/check.js";
 
 /**
  * Entry point for the CLI.
@@ -11,7 +11,7 @@ import { check } from "./commands/check.js";
 const app = subcommands({
   name: "scenage",
   description: "A utility for organizing and detecting media files.",
-  cmds: { detect, arrange, check },
+  cmds: { detect: detectCmd, arrange: arrangeCmd, check: checkCmd },
 });
 
 run(app, process.argv.slice(2));
