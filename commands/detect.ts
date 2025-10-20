@@ -8,21 +8,19 @@ import {
   optional,
   positional,
 } from "cmd-ts";
+import { SUBTITLE_EXTENSIONS, VIEDO_EXTENSIONS } from "../constants/index.js";
 import { CsvList } from "../core/csv-list-type.js";
 import { detectFiles } from "../core/detect-files.js";
 import { Path } from "../core/path-type.js";
-import { SUBTITLE_EXTENSIONS, VIEDO_EXTENSIONS } from "../constants/index.js";
 
 /**
  * CLI command: `detect`
  *
- * Scans a folder for video, subtitle, or general file types.
- * Supports recursive scanning, minimum file size filtering,
- * and excluding specific extensions.
+ * Scans a folder for media files and outputs structured metadata.
  */
 export const detect = command({
   name: "detect",
-  description: "Scan a folder for video and subtitle files.",
+  description: "Scan a folder for video and subtitle files and parse metadata.",
   args: {
     path: positional({
       type: Path,
@@ -68,38 +66,17 @@ export const detect = command({
       description:
         "Comma-separated list of file extensions to exclude (e.g. tmp,part,zip)",
     }),
-
-    pick: flag({
-      type: boolean,
-      long: "pick",
-      short: "p",
-      defaultValue: () => false,
-      description:
-        "Interactively pick which detected files to continue with (not implemented yet)",
-    }),
   },
 
   handler: async (args) => {
-    const { videos, subtitles } = await detectFiles(args.path, {
+    const entries = detectFiles(args.path, {
       recursive: args.recursive,
       minMovieSize: args.minMovieSize,
       videos: args.videos,
       subs: args.subs,
       exclude: args.exclude,
     });
-
     console.log(`📂 Scanned folder: ${args.path}`);
-    console.log(`🎞 Found videos: ${videos.length}`);
-    console.log(`💬 Found subtitles: ${subtitles.length}`);
-
-    if (videos.length) {
-      console.log("\nVideos:");
-      videos.forEach((v) => console.log("  •", v));
-    }
-
-    if (subtitles.length) {
-      console.log("\nSubtitles:");
-      subtitles.forEach((s) => console.log("  •", s));
-    }
+    console.log(`🧩 Total detected files: ${entries.length}`);
   },
 });

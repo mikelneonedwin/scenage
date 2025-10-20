@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "lint": "tsc -b && eslint --fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "scenage":"bun run index.ts"
   },
   "dependencies": {
     "@clack/core": "^0.5.0",

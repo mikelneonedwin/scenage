@@ -1,16 +1,9 @@
 import { globSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { parseFileName, type MediaEntry } from "./parse-file-name";
 
 /**
  * Scans a directory for files matching specific extensions.
- *
- * Uses Node 22+ `fs.globSync()` for fast glob-based scanning.
- *
- * @param dir - The directory to scan.
- * @param extensions - List of extensions to include (without dots).
- * @param recursive - Whether to include subdirectories.
- * @param exclude - Optional list of extensions to exclude (without dots).
- * @returns Array of matched absolute file paths.
  */
 export function scanDirectory(
   dir: string,
@@ -18,23 +11,24 @@ export function scanDirectory(
   recursive: boolean,
   exclude: string[] = [],
 ): string[] {
-  const includedExtensionsPattern = `*.{${extensions.join(",")}}`;
-  const includePattern = recursive
-    ? join(dir, `**`, includedExtensionsPattern)
-    : join(dir, includedExtensionsPattern);
+  const includedPattern = recursive
+    ? join(dir, `**`, `*.{${extensions.join(",")}}`)
+    : join(dir, `*.{${extensions.join(",")}}`);
 
-  const excludedExtensionsPattern = `*.{${exclude.join(",")}}`;
-  const excludePattern = recursive
-    ? join(dir, `**`, excludedExtensionsPattern)
-    : join(dir, excludedExtensionsPattern);
+  const excludePattern =
+    exclude.length > 0
+      ? recursive
+        ? join(dir, `**`, `*.{${exclude.join(",")}}`)
+        : join(dir, `*.{${exclude.join(",")}}`)
+      : "";
 
-  return globSync(includePattern, { exclude: [excludePattern] });
+  return globSync(includedPattern, {
+    exclude: excludePattern ? [excludePattern] : [],
+  });
 }
 
 /**
  * Returns the size of a file in megabytes.
- *
- * @param filePath - Path to the file.
  */
 export function getFileSizeMB(filePath: string): number {
   const stats = statSync(filePath);
@@ -42,13 +36,9 @@ export function getFileSizeMB(filePath: string): number {
 }
 
 /**
- * Detects files under a directory, filtered by include/exclude extensions
- * and optional size constraints.
- *
- * @param path - Directory path to scan.
- * @param options - File detection options.
+ * Detects files under a directory and returns structured `MediaEntry` data.
  */
-export async function detectFiles(
+export function detectFiles(
   path: string,
   options: {
     recursive: boolean;
@@ -57,7 +47,7 @@ export async function detectFiles(
     subs?: string[];
     exclude?: string[];
   },
-) {
+): MediaEntry[] {
   const {
     recursive,
     minMovieSize,
@@ -66,12 +56,23 @@ export async function detectFiles(
     exclude = [],
   } = options;
 
-  const videoFiles = scanDirectory(path, videos, recursive, exclude);
-  const subtitleFiles = scanDirectory(path, subs, recursive, exclude);
+  // Collect all files
+  const allFiles = [
+    ...scanDirectory(path, videos, recursive, exclude),
+    ...scanDirectory(path, subs, recursive, exclude),
+  ];
 
-  const filteredVideos = minMovieSize
-    ? videoFiles.filter((file) => getFileSizeMB(file) >= minMovieSize)
-    : videoFiles;
+  // Filter videos by size if needed
+  const filtered = minMovieSize
+    ? allFiles.filter((file) => {
+        const ext = file.split(".").pop()?.toLowerCase() ?? "";
+        const isVideo = videos.includes(ext);
+        return !isVideo || getFileSizeMB(file) >= minMovieSize;
+      })
+    : allFiles;
 
-  return { videos: filteredVideos, subtitles: subtitleFiles };
+  // Parse into structured data
+  return filtered.map((filePath) =>
+    parseFileName(filePath, { videoExts: videos, subtitleExts: subs }),
+  );
 }
