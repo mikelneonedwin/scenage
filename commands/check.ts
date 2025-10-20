@@ -38,7 +38,7 @@ export const checkCmd = command({
     const files = detectCmd.handler(args);
     const entries = files.reduce(
       (entries, file) => {
-        if (file.type == "movie") {
+        if (file.type === "movie") {
           const entry = (entries[file.title] ??= {
             title: file.title,
             type: file.type,
@@ -67,7 +67,7 @@ export const checkCmd = command({
     );
     const reports = Object.values(entries).reduce(
       (reports, entry) => {
-        if (entry.type == "movie" && !entry.movie) {
+        if (entry.type === "movie" && !entry.movie) {
           const report = (reports["movies"] ??= {
             title: "Movies",
             items: [],
@@ -103,18 +103,20 @@ export const checkCmd = command({
           const allSeasons = Object.values(entry.seasons).map(
             (item) => item.season,
           );
-          const missingSeasons = Array.from({
-            length: Math.max(...allSeasons),
-          })
-            .map((_, index) => index + 1)
-            .filter((v) => !allSeasons.includes(v))
-            .map((season) => `Season: ${season}`);
-          if (missingSeasons.length) {
-            const report = (reports[entry.title] ??= {
-              title: entry.title,
-              items: [],
-            });
-            report.items.push(...missingSeasons);
+          if (allSeasons.length) {
+            const missingSeasons = Array.from({
+              length: Math.max(...allSeasons),
+            })
+              .map((_, index) => index + 1)
+              .filter((v) => !allSeasons.includes(v))
+              .map((season) => `Season: ${season}`);
+            if (missingSeasons.length) {
+              const report = (reports[entry.title] ??= {
+                title: entry.title,
+                items: [],
+              });
+              report.items.push(...missingSeasons);
+            }
           }
         }
         return reports;

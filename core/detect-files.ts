@@ -42,7 +42,7 @@ export function detectFiles(
   path: string,
   options: {
     recursive: boolean;
-    minVideoFileSizeMB?: number;
+    minMovieFileSizeMB?: number;
     videos?: string[];
     subs?: string[];
     exclude?: string[];
@@ -50,7 +50,7 @@ export function detectFiles(
 ): MediaEntry[] {
   const {
     recursive,
-    minVideoFileSizeMB,
+    minMovieFileSizeMB,
     videos = [],
     subs = [],
     exclude = [],
@@ -62,12 +62,11 @@ export function detectFiles(
     ...scanDirectory(path, subs, recursive, exclude),
   ];
 
-  // Filter video files smaller than minVideoFileSizeMB (if set)
-  const filtered = minVideoFileSizeMB
+  const filtered = minMovieFileSizeMB
     ? allFiles.filter((file) => {
         const ext = file.split(".").pop()?.toLowerCase() ?? "";
         const isVideo = videos.includes(ext);
-        return !isVideo || getFileSizeInMB(file) >= minVideoFileSizeMB;
+        return !isVideo || getFileSizeInMB(file) >= minMovieFileSizeMB;
       })
     : allFiles;
 

@@ -1,7 +1,7 @@
 import { run, subcommands } from "cmd-ts";
-import { detectCmd } from "./commands/detect.js";
-import { arrangeCmd } from "./commands/arrange.js";
-import { checkCmd } from "./commands/check.js";
+import { detectCmd } from "./commands/detect";
+import { arrangeCmd } from "./commands/arrange";
+import { checkCmd } from "./commands/check";
 
 /**
  * Entry point for the CLI.

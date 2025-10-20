@@ -3,9 +3,9 @@ import {
   MIN_MOVIE_SIZE_MB,
   SUBTITLE_EXTENSIONS,
   VIDEO_EXTENSIONS,
-} from "../constants/index.js";
-import { CsvList } from "../core/csv-list-type.js";
-import { Path } from "../core/path-type.js";
+} from "@/constants/index";
+import { CsvList } from "./csv-list-type";
+import { Path } from "./path-type";
 
 export const detectArgs = {
   path: positional({

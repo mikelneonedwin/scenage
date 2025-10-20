@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { command } from "cmd-ts";
-import { detectArgs } from "@/core/detect-args.js";
-import { detectFiles } from "@/core/detect-files.js";
+import { detectArgs } from "@/core/detect-args";
+import { detectFiles } from "@/core/detect-files";
 
 /**
  * CLI command: `detect`
@@ -19,7 +19,7 @@ export const detectCmd = command({
       videos: args.videos,
       subs: args.subs,
       exclude: args.exclude,
-      minVideoFileSizeMB: args.minMovieFileSizeMB,
+      minMovieFileSizeMB: args.minMovieFileSizeMB,
     });
     console.log(`📂 Scanned folder: ${args.path}`);
     console.log(`🧩 Total detected files: ${entries.length}`);
