@@ -30,7 +30,7 @@ export function scanDirectory(
 /**
  * Returns the size of a file in megabytes.
  */
-export function getFileSizeMB(filePath: string): number {
+export function getFileSizeInMB(filePath: string): number {
   const stats = statSync(filePath);
   return stats.size / (1024 * 1024);
 }
@@ -42,7 +42,7 @@ export function detectFiles(
   path: string,
   options: {
     recursive: boolean;
-    minMovieSize?: number;
+    minVideoFileSizeMB?: number;
     videos?: string[];
     subs?: string[];
     exclude?: string[];
@@ -50,7 +50,7 @@ export function detectFiles(
 ): MediaEntry[] {
   const {
     recursive,
-    minMovieSize,
+    minVideoFileSizeMB,
     videos = [],
     subs = [],
     exclude = [],
@@ -62,12 +62,12 @@ export function detectFiles(
     ...scanDirectory(path, subs, recursive, exclude),
   ];
 
-  // Filter videos by size if needed
-  const filtered = minMovieSize
+  // Filter video files smaller than minVideoFileSizeMB (if set)
+  const filtered = minVideoFileSizeMB
     ? allFiles.filter((file) => {
         const ext = file.split(".").pop()?.toLowerCase() ?? "";
         const isVideo = videos.includes(ext);
-        return !isVideo || getFileSizeMB(file) >= minMovieSize;
+        return !isVideo || getFileSizeInMB(file) >= minVideoFileSizeMB;
       })
     : allFiles;
 

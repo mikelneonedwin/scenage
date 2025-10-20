@@ -7,6 +7,7 @@ import type { Type } from "cmd-ts";
  * "mp4,mkv,avi" → ["mp4", "mkv", "avi"]
  */
 export const CsvList: Type<string, string[]> = {
+  // eslint-disable-next-line require-await
   async from(value) {
     return value
       .split(",")

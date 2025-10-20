@@ -1,4 +1,4 @@
-export const VIEDO_EXTENSIONS = [
+export const VIDEO_EXTENSIONS = [
   "mp4",
   "mkv",
   "webm",

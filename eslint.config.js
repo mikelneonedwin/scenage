@@ -20,6 +20,7 @@ export default defineConfig([
   },
   {
     rules: {
+      "require-await": "error",
       "no-console": [
         "warn",
         {
