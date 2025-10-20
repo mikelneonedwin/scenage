@@ -4,12 +4,12 @@ import { Path } from "@/core/path-type";
 import { command, number, option } from "cmd-ts";
 import { existsSync, mkdirSync, renameSync } from "node:fs";
 import { join, parse } from "node:path";
-import { detect } from "./detect";
+import { detectCmd } from "./detect";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { path, ...pickedArgs } = detectArgs;
 
-export const arrange = command({
+export const arrangeCmd = command({
   name: "arrange",
   description:
     "Scan and move all video/subtitle files to their respective folders.",
@@ -35,7 +35,7 @@ export const arrange = command({
     }),
   },
   handler: ({ input, output, padSize, ...detectArgs }) => {
-    const files = detect.handler({
+    const files = detectCmd.handler({
       ...detectArgs,
       path: input,
     });
@@ -81,7 +81,6 @@ export const arrange = command({
           `❌ Failed to move ${file.filePath}: ${error instanceof Error ? error.message : String(error)}`,
         );
       }
-      movedCount++;
     });
     console.log(`\n✅ Done!`);
     console.log(`📦 Total files arranged: ${movedCount}`);

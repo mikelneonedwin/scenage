@@ -27,6 +27,13 @@ export default defineConfig([
           allow: ["error"],
         },
       ],
+      eqeqeq: "error",
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: ["*.js"], // Disallow direct .js imports
+        },
+      ],
     },
   },
 ]);
