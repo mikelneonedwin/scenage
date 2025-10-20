@@ -8,7 +8,7 @@ import { resolve } from "node:path";
  * Defaults to the current working directory if no path is provided.
  */
 export const Path = extendType(string, {
-  defaultValue: process.cwd,
+  // eslint-disable-next-line require-await
   async from(val: string) {
     return resolve(val);
   },

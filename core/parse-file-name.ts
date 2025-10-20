@@ -1,11 +1,13 @@
 import { basename, extname } from "node:path";
 
+export type FileExtension = `.${string}`;
+
 export interface BaseEntry {
   title: string;
   isVideo: boolean;
   isSubtitle: boolean;
   filePath: string;
-  fileExtension: string;
+  fileExtension: FileExtension;
 }
 
 export interface MovieEntry extends BaseEntry {
@@ -44,7 +46,7 @@ export function parseFileName(
   filePath: string,
   opts: { videoExts: string[]; subtitleExts: string[] },
 ): MediaEntry {
-  const ext = extname(filePath).toLowerCase();
+  const ext = extname(filePath).toLowerCase() as FileExtension;
   const isSubtitle = opts.subtitleExts.includes(ext.replace(".", ""));
   const isVideo = opts.videoExts.includes(ext.replace(".", ""));
 
