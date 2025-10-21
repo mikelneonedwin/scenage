@@ -103,7 +103,7 @@ export const checkCmd = command({
           const allSeasons = Object.values(entry.seasons).map(
             (item) => item.season,
           );
-          if (allSeasons.length) {
+          if (allSeasons.length >= 2) {
             const missingSeasons = Array.from({
               length: Math.max(...allSeasons),
             })
